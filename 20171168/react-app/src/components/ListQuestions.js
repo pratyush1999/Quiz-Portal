@@ -13,6 +13,7 @@ class ListQuestions extends Component {
       data: [],
       answer:[],
       qid:parseInt(params.match.params.qid),
+      gid:parseInt(params.match.params.gid),
       NofAns:0,
       score:0,
       nam:JSON.parse(window.localStorage.getItem('username')),

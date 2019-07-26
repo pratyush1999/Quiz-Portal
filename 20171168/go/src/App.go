@@ -33,6 +33,7 @@ type Scoref struct{
    ID uint `json:"id"`
    Nam string `json:"nam"`
    Qid uint `json:"qid"`
+   Gid uint `json:"gid"`
    Score uint `json:"score"`
 }
 type User struct{
@@ -69,8 +70,9 @@ func main() {
    r.GET("/question/:id", GetQuestions)
    r.POST("/question", CreateQuestion)
    r.POST("/score", CreateScore)
-   r.GET("/score/:qid/:una", GetScore)
+   r.GET("/score/:gid/:qid/:una", GetScore)
    r.PUT("/question/:id", UpdateQuestion)
+   r.GET("/scoreboard", GetScoreBoard)
   // r.PUT("/question/:id", UpdateQuestion)
    r.DELETE("/question/:id", DeleteQuestion)
 
@@ -109,6 +111,7 @@ func CreateScore(c *gin.Context) {
    //    return 
    // }
    var sco Scoref
+   // fmt.Println(c.Params.ByName("nam"))
    c.BindJSON(&sco)
    fmt.Println(sco)
    // db.Where("ID = ?",score.Qid).Find(&quiz)
@@ -122,11 +125,31 @@ func CreateScore(c *gin.Context) {
    c.Header("access-control-allow-origin", "*") 
    c.JSON(200, sco)
 }
+func GetScoreBoard(c *gin.Context){
+   type ScoreBoard struct{
+  // ID uint `json:"id"`
+   Nam string `json:"nam"`
+   Total uint `json:"total"`
+   }
+   var scoreboard []ScoreBoard
+   // err :=db.Raw("SELECT nam as Name, SUM(score) as Score FROM Scoref GROUP BY Name ORDER BY Score desc").Scan(&scoreboard).Error
+      err :=db.Raw("SELECT  nam, SUM(score) as total FROM scorefs GROUP BY nam ORDER BY total desc").Scan(&scoreboard).Error
+
+   if(err!=nil){
+      c.AbortWithStatus(404)
+      fmt.Println(err)
+   } else {
+      c.Header("access-control-allow-origin", "*") 
+      c.JSON(200, scoreboard)
+      fmt.Println(scoreboard)
+   }
+}
 func GetScore(c *gin.Context) {
    uname := c.Params.ByName("una")
    qidd :=c.Params.ByName("qid")
+   gidd :=c.Params.ByName("gid")
    var sco []Scoref
-   if err := db.Where("Nam = ?",uname).Where("Qid = ?",qidd).Find(&sco).Error; err != nil {
+   if err := db.Where("Nam = ?",uname).Where("Qid = ?",qidd).Where("Gid = ?",gidd).Find(&sco).Error; err != nil {
       c.AbortWithStatus(404)
       fmt.Println(err)
    } else {

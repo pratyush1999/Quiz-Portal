@@ -12,6 +12,8 @@ import NewQuestion from './Questions/NewQuestion'
 import LogOut from './Login/src/LogOut'
 import EditQuestion from './EditQuestion'
 import UserScoreboard from './UserScoreboard'
+import Overall_Scoreboard from './Overall_Scoreboard'
+
 class App extends Component {
   render() {
     return (
@@ -36,6 +38,7 @@ class App extends Component {
                 {  JSON.parse(window.localStorage.getItem('loggedIn')) &&
                   <ul className="nav navbar-nav">
                   <li><Link to={'/ListGenre'}>ListGenre</Link></li>
+                  <li><Link to={'/Overall_Scoreboard'}>Overall_Scoreboard</Link></li>
                   <li><Link to={'/LogOut'}>LogOut</Link></li>
                 </ul>
               }
@@ -58,9 +61,10 @@ class App extends Component {
                    <Route exact path='/ListGenre' component={ListGenre} />
                  <Route exact path='/LogOut' component={LogOut} />
                  <Route exact path='/ListQuizzes/:gid' component={ListQuizzes} />
-                 <Route exact path='/ListQuestions/:qid' component={ListQuestions} />
+                 <Route exact path='/ListQuestions/:gid/:qid' component={ListQuestions} />
                   <Route exact path='/EditQuestion/:qid' component={EditQuestion} />
-                   <Route exact path='/UserScoreboard/:qid' component={UserScoreboard} />
+                   <Route exact path='/UserScoreboard/:gid/:qid' component={UserScoreboard} />
+                  <Route exact path='/Overall_Scoreboard' component={Overall_Scoreboard} />
                   </div>
                 }
                  { JSON.parse(window.localStorage.getItem('loggedIn')) &&
@@ -68,8 +72,9 @@ class App extends Component {
                  <Route exact path='/ListGenre' component={ListGenre} />
                  <Route exact path='/LogOut' component={LogOut} />
                  <Route exact path='/ListQuizzes/:gid' component={ListQuizzes} />
-                 <Route exact path='/ListQuestions/:qid' component={ListQuestions} />
-                  <Route exact path='/UserScoreboard/:qid' component={UserScoreboard} />
+                 <Route exact path='/ListQuestions/:gid/:qid' component={ListQuestions} />
+                  <Route exact path='/UserScoreboard/:gid/:qid' component={UserScoreboard} />
+                  <Route exact path='/Overall_Scoreboard' component={Overall_Scoreboard} />
                   </div>
                   }
                 }

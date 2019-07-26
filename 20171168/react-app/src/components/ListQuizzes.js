@@ -68,7 +68,7 @@ class ListQuizzes extends Component {
             {item.schoice}
                </td>
                <td>
-               <Link to ={"/ListQuestions/"+item.id}>
+               <Link to ={"/ListQuestions/"+this.state.gid+"/"+item.id}>
             {item.qtitle}
             </Link>
                </td>
@@ -78,7 +78,7 @@ class ListQuizzes extends Component {
             </Link>
                </td>
                 <td>
-                <Link to ={"/UserScoreboard/"+item.id}>
+                <Link to ={"/UserScoreboard/"+this.state.gid+"/"+item.id}>
                 View Score
                 </Link>
                </td>

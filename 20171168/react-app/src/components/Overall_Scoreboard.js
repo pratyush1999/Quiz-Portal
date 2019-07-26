@@ -16,7 +16,7 @@ class UserScoreboard extends Component {
     }
   }
   componentDidMount() {
-    const request = new Request('http://127.0.0.1:8080/score/'+this.state.gid+'/'+this.state.qid+'/'+JSON.parse(window.localStorage.getItem('username')));
+    const request = new Request('http://127.0.0.1:8080/scoreboard');
     fetch(request)
       .then(response => response.json())
         .then(data => this.setState({data: data}));
@@ -26,7 +26,7 @@ class UserScoreboard extends Component {
       <div className="App">
        <MuiThemeProvider>
         <AppBar
-             title="Scores"
+             title="Overall_Scoreboard"
            />
         <table className="table-hover">
           <thead>
@@ -38,7 +38,10 @@ class UserScoreboard extends Component {
                return (
                   <tr key = {key}>
                   <td>
-              {item.score}
+              {item.nam}
+               </td>
+                 <td>
+              {item.total}
                </td>
                   </tr>
                 )
@@ -48,7 +51,7 @@ class UserScoreboard extends Component {
          {this.state.data.length==0 && 
         <tbody>
         <br />
-        Not Attempted Yet
+        Not records
           </tbody>
         }
        </table>
