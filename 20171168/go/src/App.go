@@ -69,10 +69,11 @@ func main() {
    
    r.GET("/question/:id", GetQuestions)
    r.POST("/question", CreateQuestion)
+   r.GET("/scoreboard", GetScoreBoard)
+   r.GET("/scoreboard/:gid", GetGenreScoreBoard)
    r.POST("/score", CreateScore)
    r.GET("/score/:gid/:qid/:una", GetScore)
    r.PUT("/question/:id", UpdateQuestion)
-   r.GET("/scoreboard", GetScoreBoard)
   // r.PUT("/question/:id", UpdateQuestion)
    r.DELETE("/question/:id", DeleteQuestion)
 
@@ -92,6 +93,8 @@ func GetGenres(c *gin.Context) {
       c.JSON(200, genre)
    }
 }
+
+
 func CreateGenre(c *gin.Context) {
    var genre Genre
    c.BindJSON(&genre)
@@ -102,37 +105,19 @@ func CreateGenre(c *gin.Context) {
 ////////////////////
 ///////////////////////////////
 func CreateScore(c *gin.Context) {
-   // uname:=c.Params.ByName("uname")
-   // var user User
-   // db.Where("Name = ?",uname).Find(&user) 
-   // if len(user.Name)<1 {
-   //    c.Header("access-control-allow-origin", "*")
-   //        c.JSON(400, user)
-   //    return 
-   // }
    var sco Scoref
-   // fmt.Println(c.Params.ByName("nam"))
    c.BindJSON(&sco)
    fmt.Println(sco)
-   // db.Where("ID = ?",score.Qid).Find(&quiz)
-   // db.Where("UserId = ?",score.UserId).Where("Qid = ?",score.Qid).Find(&temp) 
-   // if len(temp.Check)>1 {
-   //    c.Header("access-control-allow-origin", "*")
-   //        c.JSON(400, temp)
-   //        return 
-   // }
    db.Create(&sco)
    c.Header("access-control-allow-origin", "*") 
    c.JSON(200, sco)
 }
 func GetScoreBoard(c *gin.Context){
    type ScoreBoard struct{
-  // ID uint `json:"id"`
    Nam string `json:"nam"`
    Total uint `json:"total"`
    }
    var scoreboard []ScoreBoard
-   // err :=db.Raw("SELECT nam as Name, SUM(score) as Score FROM Scoref GROUP BY Name ORDER BY Score desc").Scan(&scoreboard).Error
       err :=db.Raw("SELECT  nam, SUM(score) as total FROM scorefs GROUP BY nam ORDER BY total desc").Scan(&scoreboard).Error
 
    if(err!=nil){
@@ -143,6 +128,27 @@ func GetScoreBoard(c *gin.Context){
       c.JSON(200, scoreboard)
       fmt.Println(scoreboard)
    }
+}
+func GetGenreScoreBoard(c *gin.Context){
+   gidd :=c.Params.ByName("gid")
+   type ScoreBoard struct{
+ 
+   Nam string `json:"nam"`
+   Total uint `json:"total"`
+   }
+   var scoreboard []ScoreBoard
+   // err :=db.Raw("SELECT nam as Name, SUM(score) as Score FROM Scoref GROUP BY Name ORDER BY Score desc").Scan(&scoreboard).Error
+      err :=db.Raw("SELECT  nam, SUM(score) as total FROM scorefs WHERE gid = ? GROUP BY nam ORDER BY total desc ", gidd).Scan(&scoreboard).Error
+
+   if(err!=nil){
+      c.AbortWithStatus(404)
+      fmt.Println(err)
+   } else {
+      c.Header("access-control-allow-origin", "*") 
+      c.JSON(200, scoreboard)
+      fmt.Println(scoreboard)
+   }
+
 }
 func GetScore(c *gin.Context) {
    uname := c.Params.ByName("una")

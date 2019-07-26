@@ -13,7 +13,7 @@ import LogOut from './Login/src/LogOut'
 import EditQuestion from './EditQuestion'
 import UserScoreboard from './UserScoreboard'
 import Overall_Scoreboard from './Overall_Scoreboard'
-
+import GenreScoreboard from './GenreScoreboard'
 class App extends Component {
   render() {
     return (
@@ -65,6 +65,7 @@ class App extends Component {
                   <Route exact path='/EditQuestion/:qid' component={EditQuestion} />
                    <Route exact path='/UserScoreboard/:gid/:qid' component={UserScoreboard} />
                   <Route exact path='/Overall_Scoreboard' component={Overall_Scoreboard} />
+                  <Route exact path='/GenreScoreboard/:gid' component={GenreScoreboard} />
                   </div>
                 }
                  { JSON.parse(window.localStorage.getItem('loggedIn')) &&
@@ -75,6 +76,7 @@ class App extends Component {
                  <Route exact path='/ListQuestions/:gid/:qid' component={ListQuestions} />
                   <Route exact path='/UserScoreboard/:gid/:qid' component={UserScoreboard} />
                   <Route exact path='/Overall_Scoreboard' component={Overall_Scoreboard} />
+                  <Route exact path='/GenreScoreboard/:gid' component={GenreScoreboard} />
                   </div>
                   }
                 }
